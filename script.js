@@ -5,24 +5,24 @@
 /* ---------- Les fruits ----------
    rarete : 1 = très connu · 2 = connu · 3 = pour les experts
    modele : (optionnel) modèle du fruit Zoan, affiché à la révélation
-   Un fruit dont l'image est absente du dossier img/ est ignoré
-   automatiquement : il suffit d'ajouter l'image pour l'activer.     */
+   imgWeb : (optionnel) adresse web utilisée si le fichier local manque
+   Un fruit dont aucune image ne se charge est ignoré automatiquement. */
 const quizz = [
   // --- Rareté 1 : les incontournables ---
-  { img: "img/gomugomu.jpg", reponse: "gomu gomu no mi", porteur: "Luffy", rarete: 1 },
+  { img: "img/gomugomu.png", reponse: "gomu gomu no mi", porteur: "Luffy", rarete: 1 },
   { img: "img/meramera.jpg", reponse: "mera mera no mi", porteur: "Ace", rarete: 1 },
   { img: "img/guragura.png", reponse: "gura gura no mi", porteur: "Barbe Blanche", rarete: 1 },
-  { img: "img/yamiyami.jpg", reponse: "yami yami no mi", porteur: "Barbe Noire", rarete: 1 },
-  { img: "img/opeope.jpg", reponse: "ope ope no mi", porteur: "Trafalgar Law", rarete: 1 },
+  { img: "img/yamiyami.png", reponse: "yami yami no mi", porteur: "Barbe Noire", rarete: 1 },
+  { img: "img/opeope.png", reponse: "ope ope no mi", porteur: "Trafalgar Law", rarete: 1 },
   { img: "img/gorogoro.jpg", reponse: "goro goro no mi", porteur: "Ener", rarete: 1 },
-  { img: "img/hitohito.jpg", reponse: "hito hito no mi", porteur: "Chopper", rarete: 1 },
+  { img: "img/hitohito.png", reponse: "hito hito no mi", porteur: "Chopper", rarete: 1 },
   { img: "img/sunasuna.jpg", reponse: "suna suna no mi", porteur: "Crocodile", rarete: 1 },
-  { img: "img/yomiyomi.jpg", reponse: "yomi yomi no mi", porteur: "Brook", rarete: 1 },
+  { img: "img/yomiyomi.png", reponse: "yomi yomi no mi", porteur: "Brook", rarete: 1 },
   { img: "img/barabara.png", reponse: "bara bara no mi", porteur: "Baggy", rarete: 1 },
   { img: "img/hanahana.png", reponse: "hana hana no mi", porteur: "Nico Robin", rarete: 1 },
   { img: "img/itoito.png", reponse: "ito ito no mi", porteur: "Doflamingo", rarete: 1 },
   // --- Rareté 2 : les classiques ---
-  { img: "img/kagekage.jpg", reponse: "kage kage no mi", porteur: "Gecko Moria", rarete: 2 },
+  { img: "img/kagekage.png", reponse: "kage kage no mi", porteur: "Gecko Moria", rarete: 2 },
   { img: "img/nikyunikyu.png", reponse: "nikyu nikyu no mi", porteur: "Bartholomew Kuma", rarete: 2 },
   { img: "img/bomubomu.png", reponse: "bomu bomu no mi", porteur: "Mr. 5", rarete: 2 },
   { img: "img/supasupa.png", reponse: "supa supa no mi", porteur: "Mr. 1 (Daz Bones)", rarete: 2 },
@@ -38,21 +38,21 @@ const quizz = [
   { img: "img/awaawa.png", reponse: "awa awa no mi", porteur: "Kalifa", rarete: 3 },
   { img: "img/shiroshiro.png", reponse: "shiro shiro no mi", porteur: "Capone Bege", rarete: 3 },
 
-  // --- En attente d'image : déposer le fichier dans img/ pour les activer ---
-  { img: "img/hiehie.png", reponse: "hie hie no mi", porteur: "Aokiji", rarete: 1 },
-  { img: "img/pikapika.png", reponse: "pika pika no mi", porteur: "Kizaru", rarete: 1 },
-  { img: "img/magumagu.png", reponse: "magu magu no mi", porteur: "Akainu", rarete: 1 },
-  { img: "img/meromero.png", reponse: "mero mero no mi", porteur: "Boa Hancock", rarete: 1 },
-  { img: "img/mokumoku.png", reponse: "moku moku no mi", porteur: "Smoker", rarete: 2 },
-  { img: "img/sorusoru.png", reponse: "soru soru no mi", porteur: "Big Mom", rarete: 2 },
-  { img: "img/mochimochi.png", reponse: "mochi mochi no mi", porteur: "Katakuri", rarete: 2 },
-  { img: "img/gasugasu.png", reponse: "gasu gasu no mi", porteur: "Caesar Clown", rarete: 2 },
-  { img: "img/horohoro.png", reponse: "horo horo no mi", porteur: "Perona", rarete: 2 },
-  { img: "img/dokudoku.png", reponse: "doku doku no mi", porteur: "Magellan", rarete: 2 },
-  { img: "img/manemane.png", reponse: "mane mane no mi", porteur: "Bon Clay (Mr. 2)", rarete: 3 },
-  { img: "img/hobihobi.png", reponse: "hobi hobi no mi", porteur: "Sugar", rarete: 3 },
-  { img: "img/zushizushi.png", reponse: "zushi zushi no mi", porteur: "Fujitora", rarete: 3 },
-  { img: "img/baribari.png", reponse: "bari bari no mi", porteur: "Bartolomeo", rarete: 3 },
+  // --- Image chargée depuis le web (wiki One Piece) si le fichier local est absent ---
+  { img: "img/hiehie.png", imgWeb: "https://static.wikia.nocookie.net/onepiece/images/5/56/Hie_Hie_no_Mi_Infobox.png/revision/latest/scale-to-width-down/400", reponse: "hie hie no mi", porteur: "Aokiji", rarete: 1 },
+  { img: "img/pikapika.png", imgWeb: "https://static.wikia.nocookie.net/onepiece/images/6/66/Pika_Pika_no_Mi_Infobox.png/revision/latest/scale-to-width-down/400", reponse: "pika pika no mi", porteur: "Kizaru", rarete: 1 },
+  { img: "img/magumagu.png", imgWeb: "https://static.wikia.nocookie.net/onepiece/images/0/07/Magu_Magu_no_Mi_Infobox.png/revision/latest/scale-to-width-down/400", reponse: "magu magu no mi", porteur: "Akainu", rarete: 1 },
+  { img: "img/meromero.png", imgWeb: "https://static.wikia.nocookie.net/onepiece/images/9/98/Mero_Mero_no_Mi_Infobox.png/revision/latest/scale-to-width-down/400", reponse: "mero mero no mi", porteur: "Boa Hancock", rarete: 1 },
+  { img: "img/mokumoku.png", imgWeb: "https://static.wikia.nocookie.net/onepiece/images/8/8d/Moku_Moku_no_Mi_Infobox.png/revision/latest/scale-to-width-down/400", reponse: "moku moku no mi", porteur: "Smoker", rarete: 2 },
+  { img: "img/sorusoru.png", imgWeb: "https://static.wikia.nocookie.net/onepiece/images/9/9d/Soru_Soru_no_Mi_Infobox.png/revision/latest/scale-to-width-down/400", reponse: "soru soru no mi", porteur: "Big Mom", rarete: 2 },
+  { img: "img/mochimochi.png", imgWeb: "https://static.wikia.nocookie.net/onepiece/images/2/2c/Mochi_Mochi_no_Mi_Infobox.png/revision/latest/scale-to-width-down/400", reponse: "mochi mochi no mi", porteur: "Katakuri", rarete: 2 },
+  { img: "img/gasugasu.png", imgWeb: "https://static.wikia.nocookie.net/onepiece/images/c/cf/Gasu_Gasu_no_Mi_Infobox.png/revision/latest/scale-to-width-down/400", reponse: "gasu gasu no mi", porteur: "Caesar Clown", rarete: 2 },
+  { img: "img/horohoro.png", imgWeb: "https://static.wikia.nocookie.net/onepiece/images/1/14/Horo_Horo_no_Mi_Infobox.png/revision/latest/scale-to-width-down/400", reponse: "horo horo no mi", porteur: "Perona", rarete: 2 },
+  { img: "img/dokudoku.png", imgWeb: "https://static.wikia.nocookie.net/onepiece/images/2/21/Doku_Doku_no_Mi_Infobox.png/revision/latest/scale-to-width-down/400", reponse: "doku doku no mi", porteur: "Magellan", rarete: 2 },
+  { img: "img/manemane.png", imgWeb: "https://static.wikia.nocookie.net/onepiece/images/1/12/Mane_Mane_no_Mi_Infobox.png/revision/latest/scale-to-width-down/400", reponse: "mane mane no mi", porteur: "Bon Clay (Mr. 2)", rarete: 3 },
+  { img: "img/hobihobi.png", imgWeb: "https://static.wikia.nocookie.net/onepiece/images/3/3d/Hobi_Hobi_no_Mi_Infobox.png/revision/latest/scale-to-width-down/400", reponse: "hobi hobi no mi", porteur: "Sugar", rarete: 3 },
+  { img: "img/zushizushi.png", imgWeb: "https://static.wikia.nocookie.net/onepiece/images/b/ba/Zushi_Zushi_no_Mi_Infobox.png/revision/latest/scale-to-width-down/400", reponse: "zushi zushi no mi", porteur: "Fujitora", rarete: 3 },
+  { img: "img/baribari.png", imgWeb: "https://static.wikia.nocookie.net/onepiece/images/d/de/Bari_Bari_no_Mi_Infobox.png/revision/latest/scale-to-width-down/400", reponse: "bari bari no mi", porteur: "Bartolomeo", rarete: 3 },
 ].map((f) => ({ ...f, indice: `Le porteur du fruit est ${f.porteur}` }));
 
 // Fruits réellement jouables (image trouvée), rempli au démarrage
@@ -198,10 +198,16 @@ function chargerFruits() {
     quizz.map(
       (f) =>
         new Promise((resolve) => {
-          const img = new Image();
-          img.onload = () => resolve(f);
-          img.onerror = () => resolve(null);
-          img.src = f.img;
+          const sources = [f.img, f.imgWeb].filter(Boolean);
+          const essayer = (i) => {
+            if (i >= sources.length) return resolve(null);
+            const img = new Image();
+            img.referrerPolicy = "no-referrer";
+            img.onload = () => resolve({ ...f, img: sources[i] });
+            img.onerror = () => essayer(i + 1);
+            img.src = sources[i];
+          };
+          essayer(0);
         })
     )
   ).then((list) => list.filter(Boolean));
@@ -418,7 +424,7 @@ function nextQuestion() {
     }
 
     <div class="fruit-frame fx-${cfg.effect} anime" id="fruit-frame">
-      <img src="${q.img}" alt="Fruit du démon à deviner" ${q.origin ? `style="transform-origin:${q.origin}"` : ""} />
+      <img src="${q.img}" referrerpolicy="no-referrer" alt="Fruit du démon à deviner" ${q.origin ? `style="transform-origin:${q.origin}"` : ""} />
     </div>
 
     <p class="prompt">Quel est ce Fruit du Démon ?</p>
@@ -650,7 +656,7 @@ function endGame() {
       const label = !r ? "Non joué" : r.found ? `+${r.gained} pts${r.hint ? " · indice" : ""}` : "Raté";
       return `
         <li class="recap-item ${status}">
-          <img src="${q.img}" alt="" />
+          <img src="${q.img}" referrerpolicy="no-referrer" alt="" />
           <div>
             <strong>${status === "unplayed" ? "???" : fullName(q)}</strong>
             <span>${status === "unplayed" ? "" : q.porteur + " · "}${label}</span>
