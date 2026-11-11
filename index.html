@@ -23,13 +23,14 @@
     <main>
       <!-- ===== MENU PRINCIPAL ===== -->
       <section id="menu-screen" class="screen panneau panneau-large active">
-        <p class="eyebrow">One Piece · Fruits du Démon</p>
-        <h1>Devine le <span class="accent">Fruit du Démon</span></h1>
-        <p class="sous-titre">
-          Choisis ton niveau, observe le fruit et trouve son nom parmi
-          <strong id="nb-fruits" class="accent"></strong> Fruits du Démon.
-          Plus tu montes, plus la mer est agitée.
-        </p>
+        <div class="hero">
+          <p class="eyebrow">One Piece · Fruits du Démon</p>
+          <h1>Devine le <span class="accent">Fruit du Démon</span></h1>
+          <p class="sous-titre">
+            Observe le fruit et trouve son nom parmi
+            <strong id="nb-fruits" class="accent"></strong> Fruits du Démon.
+          </p>
+        </div>
 
         <div id="level-grid" class="level-grid"></div>
 
@@ -59,20 +60,19 @@
         <div class="jeu-entete">
           <button id="quit-btn" class="bouton bouton-secondaire bouton-petit" type="button">← Menu</button>
           <h2 id="hud-level"></h2>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <span class="stat-valeur" id="hud-score">0</span>
-            <span class="stat-label">Score</span>
-          </div>
-          <div class="stat">
-            <span class="stat-valeur hearts" id="hud-lives"></span>
-            <span class="stat-label">Vies</span>
-          </div>
-          <div class="stat">
-            <span class="stat-valeur" id="progress-text">1/10</span>
-            <span class="stat-label">Question</span>
+          <div class="stats">
+            <div class="stat">
+              <span class="stat-valeur" id="hud-score">0</span>
+              <span class="stat-label">Score</span>
+            </div>
+            <div class="stat">
+              <span class="stat-valeur hearts" id="hud-lives"></span>
+              <span class="stat-label">Vies</span>
+            </div>
+            <div class="stat">
+              <span class="stat-valeur" id="progress-text">1/10</span>
+              <span class="stat-label">Question</span>
+            </div>
           </div>
         </div>
 
@@ -83,7 +83,7 @@
 
       <!-- ===== FIN DE PARTIE ===== -->
       <section id="end-screen" class="screen panneau">
-        <div id="end-container"></div>
+        <div id="end-container" class="fin"></div>
       </section>
     </main>
 

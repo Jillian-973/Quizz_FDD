@@ -202,9 +202,19 @@ function chargerFruits() {
           const essayer = (i) => {
             if (i >= sources.length) return resolve(null);
             const img = new Image();
+            let fini = false;
+            const suivant = (ok) => {
+              if (fini) return;
+              fini = true;
+              clearTimeout(delai);
+              if (ok) resolve({ ...f, img: sources[i] });
+              else essayer(i + 1);
+            };
+            // une image qui ne répond pas en 4 s est considérée absente
+            const delai = setTimeout(() => suivant(false), 4000);
             img.referrerPolicy = "no-referrer";
-            img.onload = () => resolve({ ...f, img: sources[i] });
-            img.onerror = () => essayer(i + 1);
+            img.onload = () => suivant(true);
+            img.onerror = () => suivant(false);
             img.src = sources[i];
           };
           essayer(0);
@@ -258,7 +268,8 @@ function showScreen(name) {
    ========================================================= */
 function renderMenu() {
   const best = loadBest();
-  $("nb-fruits").textContent = fruits.length;
+  const pret = fruits.length > 0; // "…" tant que les images sont vérifiées
+  $("nb-fruits").textContent = pret ? fruits.length : "…";
   const keys = ["1", "2", "3", "4", "5", "shuffle"];
 
   $("level-grid").innerHTML = keys
@@ -276,13 +287,16 @@ function renderMenu() {
         <button class="level-card lvl-${key}" data-level="${key}" type="button">
           <div class="level-top">
             <span class="level-num">${isShuffle ? "?" : key}</span>
+            <div class="level-nom">
+              <span class="level-label">${isShuffle ? "Mode spécial" : "Niveau " + key}</span>
+              <h3>${lvl.name}</h3>
+            </div>
             <span class="level-icon">${lvl.icon}</span>
           </div>
-          <h3>${isShuffle ? "" : "Niveau " + key + " · "}${lvl.name}</h3>
           <p class="level-desc">${lvl.desc}</p>
-          <p class="level-pool">${fruits.filter((f) => f.rarete <= lvl.rarete).length} fruits possibles</p>
           <div class="level-bottom">
             <div class="pips" title="Difficulté">${pips}</div>
+            <span class="level-pool">${pret ? fruits.filter((f) => f.rarete <= lvl.rarete).length : "…"} fruits</span>
             <div class="level-best">
               ${
                 record
@@ -349,6 +363,7 @@ function buildQuestions(key) {
 }
 
 function startGame(key) {
+  if (fruits.length === 0) return; // fruits pas encore chargés
   levelKey = key;
   questions = buildQuestions(key);
   score = 0;
@@ -413,18 +428,15 @@ function nextQuestion() {
   $("question-container").innerHTML = `
     <div class="q-head">
       ${levelKey === "shuffle" ? `<span class="q-badge lvl-${q.level}">Niv. ${q.level} · ${cfg.name}</span>` : ""}
+      ${cfg.timer ? `<span class="timer-text"><span id="timer-text">${cfg.timer}</span> s</span>` : ""}
       <span class="q-points">+${cfg.points} pts</span>
     </div>
+    ${cfg.timer ? `<div class="timer" aria-hidden="true"><div class="timer-fill" id="timer-fill"></div></div>` : ""}
 
-    ${
-      cfg.timer
-        ? `<div class="timer" aria-hidden="true"><div class="timer-fill" id="timer-fill"></div></div>
-           <p class="timer-text"><span id="timer-text">${cfg.timer}</span> s</p>`
-        : ""
-    }
-
-    <div class="fruit-frame fx-${cfg.effect} anime" id="fruit-frame">
-      <img src="${q.img}" referrerpolicy="no-referrer" alt="Fruit du démon à deviner" ${q.origin ? `style="transform-origin:${q.origin}"` : ""} />
+    <div class="fruit-zone">
+      <div class="fruit-frame fx-${cfg.effect} anime" id="fruit-frame">
+        <img src="${q.img}" referrerpolicy="no-referrer" alt="Fruit du démon à deviner" ${q.origin ? `style="transform-origin:${q.origin}"` : ""} />
+      </div>
     </div>
 
     <p class="prompt">Quel est ce Fruit du Démon ?</p>
@@ -655,10 +667,10 @@ function endGame() {
       const status = !r ? "unplayed" : r.found ? "found" : "missed";
       const label = !r ? "Non joué" : r.found ? `+${r.gained} pts${r.hint ? " · indice" : ""}` : "Raté";
       return `
-        <li class="recap-item ${status}">
+        <li class="recap-item ${status}" title="${status === "unplayed" ? "Non joué" : fullName(q) + " · " + q.porteur}">
           <img src="${q.img}" referrerpolicy="no-referrer" alt="" />
           <div>
-            <strong>${status === "unplayed" ? "???" : fullName(q)}</strong>
+            <strong>${status === "unplayed" ? "???" : prettyName(q.reponse)}</strong>
             <span>${status === "unplayed" ? "" : q.porteur + " · "}${label}</span>
           </div>
           <span class="recap-mark">${status === "found" ? "✓" : status === "missed" ? "✗" : "–"}</span>
@@ -667,12 +679,19 @@ function endGame() {
     .join("");
 
   $("end-container").innerHTML = `
-    <div class="trophee ${survived ? "" : "perdu"}">${survived ? "🏆" : "☠️"}</div>
-    <p class="eyebrow">${LEVELS[levelKey].icon} ${levelKey === "shuffle" ? "" : "Niveau " + levelKey + " · "}${LEVELS[levelKey].name}</p>
-    <h2 class="end-titre">${title}</h2>
-    <div class="stars big">${starsHtml(stars)}</div>
-    <p class="final-score"><span>${score}</span> pts</p>
-    ${isRecord && score > 0 ? `<p class="record">Nouveau record !</p>` : best ? `<p class="muted">Record : ${best.score} pts</p>` : ""}
+    <div class="fin-titre">
+      <div class="trophee ${survived ? "" : "perdu"}">${survived ? "🏆" : "☠️"}</div>
+      <div>
+        <p class="eyebrow">${LEVELS[levelKey].icon} ${levelKey === "shuffle" ? "" : "Niveau " + levelKey + " · "}${LEVELS[levelKey].name}</p>
+        <h2 class="end-titre">${title}</h2>
+      </div>
+    </div>
+
+    <div class="fin-score">
+      <div class="stars big">${starsHtml(stars)}</div>
+      <p class="final-score"><span>${score}</span> pts</p>
+    </div>
+    ${isRecord && score > 0 ? `<p class="record">Nouveau record !</p>` : best ? `<p class="record muted">Record : ${best.score} pts</p>` : ""}
 
     <div class="stats">
       <div class="stat"><span class="stat-valeur">${found}/${questions.length}</span><span class="stat-label">Trouvés</span></div>
@@ -718,6 +737,16 @@ document.addEventListener("keydown", (e) => {
 $("quit-btn").addEventListener("click", askQuit);
 $("brand").addEventListener("click", askQuit);
 
+// Le menu déroulant « Comment jouer ? » se ferme en cliquant ailleurs ou avec Échap
+const deroulant = document.querySelector(".deroulant");
+document.addEventListener("click", (e) => {
+  if (deroulant.open && !deroulant.contains(e.target)) deroulant.open = false;
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") deroulant.open = false;
+});
+
+renderMenu();
 chargerFruits().then((list) => {
   fruits = list;
   renderMenu();
