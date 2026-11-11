@@ -1,21 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Questionnaire FDD</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/svg+xml" href="img/logo.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Audiowide&family=Nunito:wght@400;700;800&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <header>
-        <!-- <img src="img/jillian.png" alt=""> -->
+    <header class="barre">
+      <button class="logo" id="brand" type="button" title="Retour au menu">
+        <img class="logo-icone" src="img/logo.svg" alt="" />Quizz FDD
+      </button>
+      <!-- <img src="img/jillian.png" alt=""> -->
     </header>
-    <main><div id="question-container"></div></main>
-    <footer></footer>
+
+    <main>
+      <!-- ===== MENU PRINCIPAL ===== -->
+      <section id="menu-screen" class="screen panneau panneau-large active">
+        <div class="hero">
+          <p class="eyebrow">One Piece · Fruits du Démon</p>
+          <h1>Devine le <span class="accent">Fruit du Démon</span></h1>
+          <p class="sous-titre">
+            Observe le fruit et trouve son nom parmi
+            <strong id="nb-fruits" class="accent"></strong> Fruits du Démon.
+          </p>
+        </div>
+
+        <div id="level-grid" class="level-grid"></div>
+
+        <details class="deroulant">
+          <summary>
+            <span class="deroulant-icone">?</span>
+            <span class="deroulant-titre">Comment jouer ?</span>
+            <span class="chevron" aria-hidden="true"></span>
+          </summary>
+          <div class="deroulant-contenu">
+            <ul class="regles">
+              <li><span class="regles-numero">1</span><span>Chaque partie tire <strong>10 fruits au hasard</strong> : observe l'image et trouve le nom du fruit (ex. <em>gomu gomu no mi</em>).</span></li>
+              <li><span class="regles-numero">2</span><span>Une mauvaise réponse coûte une vie ♥. Plus de vies : fin de partie.</span></li>
+              <li><span class="regles-numero">3</span><span>L'indice révèle le porteur du fruit, mais réduit les points gagnés.</span></li>
+              <li><span class="regles-numero">4</span><span>Réponds vite et enchaîne 3 bonnes réponses pour gagner des bonus.</span></li>
+              <li><span class="regles-numero">5</span><span>Les premiers niveaux piochent parmi les fruits les plus connus, les derniers dans toute l'encyclopédie.</span></li>
+            </ul>
+            <p class="raccourcis">
+              <kbd>Entrée</kbd> valider · <kbd>1</kbd>–<kbd>4</kbd> choix QCM · <kbd>I</kbd> indice
+            </p>
+          </div>
+        </details>
+      </section>
+
+      <!-- ===== JEU ===== -->
+      <section id="game-screen" class="screen panneau">
+        <div class="jeu-entete">
+          <button id="quit-btn" class="bouton bouton-secondaire bouton-petit" type="button">← Menu</button>
+          <h2 id="hud-level"></h2>
+          <div class="stats">
+            <div class="stat">
+              <span class="stat-label">Score</span>
+              <span class="stat-valeur" id="hud-score">0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Vies</span>
+              <span class="stat-valeur hearts" id="hud-lives"></span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Question</span>
+              <span class="stat-valeur" id="progress-text">1/10</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="progression"><div class="progression-remplie" id="progress-fill"></div></div>
+
+        <div id="question-container"></div>
+      </section>
+
+      <!-- ===== FIN DE PARTIE ===== -->
+      <section id="end-screen" class="screen panneau">
+        <div id="end-container" class="fin"></div>
+      </section>
+    </main>
+
+    <footer class="pied">
+      <p>© 2026 Quizz FDD · Tous droits réservés</p>
+    </footer>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <script src="script.js"></script>
   </body>
 </html>
