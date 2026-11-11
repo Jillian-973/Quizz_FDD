@@ -288,14 +288,14 @@ function updateHud() {
     `<span class="heart ${i < attempts ? "" : "lost"}">♥</span>`
   ).join("");
 
-  $("hud-level").innerHTML = `
-    <span class="hud-name">${lvl.icon} ${lvl.name}</span>
-    <span class="hearts" title="${attempts} vie(s) restante(s)">${hearts}</span>`;
+  $("hud-level").textContent = `${lvl.icon} ${lvl.name}`;
+  $("hud-lives").innerHTML = hearts;
+  $("hud-lives").title = `${attempts} vie(s) restante(s)`;
   $("hud-score").textContent = score;
 
   const done = Math.min(currentQuestion, questions.length);
   $("progress-fill").style.width = `${(done / questions.length) * 100}%`;
-  $("progress-text").textContent = `${Math.min(currentQuestion + 1, questions.length)} / ${questions.length}`;
+  $("progress-text").textContent = `${Math.min(currentQuestion + 1, questions.length)}/${questions.length}`;
 }
 
 function nextQuestion() {
@@ -327,7 +327,7 @@ function nextQuestion() {
         </div>`
       : `<form id="answer-form" class="answer-form" autocomplete="off">
           <input type="text" id="answer" placeholder="ex. gomu gomu no mi" aria-label="Votre réponse" />
-          <button type="submit" class="primary-btn">Valider</button>
+          <button type="submit" class="bouton">Valider</button>
         </form>`;
 
   $("question-container").innerHTML = `
@@ -343,7 +343,7 @@ function nextQuestion() {
         : ""
     }
 
-    <div class="fruit-frame fx-${cfg.effect}" id="fruit-frame">
+    <div class="fruit-frame fx-${cfg.effect} anime" id="fruit-frame">
       <img src="${q.img}" alt="Fruit du démon à deviner" ${q.origin ? `style="transform-origin:${q.origin}"` : ""} />
     </div>
 
@@ -353,8 +353,8 @@ function nextQuestion() {
     <p id="hint" class="hint"></p>
 
     <div class="actions" id="actions">
-      <button id="hint-btn" class="secondary-btn" type="button">💡 Indice (−${cfg.malus} pts)</button>
-      <button id="skip-btn" class="secondary-btn" type="button">Passer (−1 ♥)</button>
+      <button id="hint-btn" class="bouton bouton-secondaire bouton-petit" type="button">💡 Indice (−${cfg.malus} pts)</button>
+      <button id="skip-btn" class="bouton bouton-secondaire bouton-petit" type="button">Passer (−1 ♥)</button>
     </div>
   `;
 
@@ -470,7 +470,9 @@ function resolveQuestion(found, gained, reason = "") {
   const q = questions[currentQuestion];
   results.push({ ...q, found, hint: hint_asked, gained: gained ? gained.total : 0 });
 
-  $("fruit-frame").classList.add("revealed");
+  const frame = $("fruit-frame");
+  frame.classList.remove("anime", "shake");
+  frame.classList.add("revealed", found ? "trouver" : "rate");
   $("hint").textContent = "";
 
   // QCM : surligner la bonne réponse
@@ -499,7 +501,7 @@ function resolveQuestion(found, gained, reason = "") {
 
   const isLast = currentQuestion + 1 >= questions.length || attempts <= 0;
   $("actions").innerHTML = `
-    <button id="next-btn" class="primary-btn" type="button">
+    <button id="next-btn" class="bouton" type="button">
       ${isLast ? "Voir le résultat" : "Question suivante"} →
     </button>`;
   $("next-btn").addEventListener("click", goNext);
@@ -512,8 +514,9 @@ function goNext() {
 }
 
 function shake() {
-  const card = $("question-container");
-  card.classList.remove("shake");
+  const card = $("fruit-frame");
+  if (!card) return;
+  card.classList.remove("anime", "shake");
   void card.offsetWidth; // relance l'animation
   card.classList.add("shake");
 }
@@ -550,9 +553,10 @@ function endGame() {
 
   const maxScore = questions.reduce((sum, q) => sum + LEVELS[q.level].points, 0);
   const ratio = score / maxScore;
-  const stars = ratio >= 0.9 ? 3 : ratio >= 0.6 ? 2 : ratio >= 0.3 ? 1 : 0;
   const found = results.filter((r) => r.found).length;
   const survived = attempts > 0;
+  let stars = ratio >= 0.9 ? 3 : ratio >= 0.6 ? 2 : ratio >= 0.3 ? 1 : 0;
+  if (!survived) stars = Math.min(stars, 2); // pas de 3 étoiles en cas de naufrage
 
   const best = loadBest()[levelKey];
   const isRecord = !best || score > best.score;
@@ -583,23 +587,24 @@ function endGame() {
     .join("");
 
   $("end-container").innerHTML = `
+    <div class="trophee ${survived ? "" : "perdu"}">${survived ? "🏆" : "☠️"}</div>
     <p class="eyebrow">${LEVELS[levelKey].icon} ${levelKey === "shuffle" ? "" : "Niveau " + levelKey + " · "}${LEVELS[levelKey].name}</p>
-    <h2>${title}</h2>
+    <h2 class="end-titre">${title}</h2>
     <div class="stars big">${starsHtml(stars)}</div>
     <p class="final-score"><span>${score}</span> pts</p>
-    ${isRecord && score > 0 ? `<p class="record">🏆 Nouveau record !</p>` : best ? `<p class="muted">Record : ${best.score} pts</p>` : ""}
+    ${isRecord && score > 0 ? `<p class="record">Nouveau record !</p>` : best ? `<p class="muted">Record : ${best.score} pts</p>` : ""}
 
     <div class="stats">
-      <div><strong>${found}/${questions.length}</strong><span>fruits trouvés</span></div>
-      <div><strong>${bestStreak}</strong><span>meilleure série</span></div>
-      <div><strong>${Math.max(attempts, 0)}</strong><span>vies restantes</span></div>
+      <div class="stat"><span class="stat-valeur">${found}/${questions.length}</span><span class="stat-label">Trouvés</span></div>
+      <div class="stat"><span class="stat-valeur">${bestStreak}</span><span class="stat-label">Série max</span></div>
+      <div class="stat"><span class="stat-valeur">${Math.max(attempts, 0)}</span><span class="stat-label">Vies</span></div>
     </div>
 
     <ul class="recap">${recap}</ul>
 
     <div class="actions">
-      <button id="replay-btn" class="primary-btn" type="button">↻ Recommencer</button>
-      <button id="menu-btn" class="secondary-btn" type="button">Menu principal</button>
+      <button id="replay-btn" class="bouton" type="button">↻ RECOMMENCER</button>
+      <button id="menu-btn" class="bouton bouton-secondaire" type="button">MENU</button>
     </div>
   `;
 

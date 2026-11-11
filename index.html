@@ -7,77 +7,78 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Audiowide&family=Poppins:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Audiowide&family=Nunito:wght@400;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <header class="topbar">
-      <button class="brand" id="brand" type="button" title="Retour au menu">
-        <span class="brand-icon">🍇</span>
-        <span>Quizz <strong>FDD</strong></span>
+    <header class="barre">
+      <button class="logo" id="brand" type="button" title="Retour au menu">
+        <span class="logo-icone">?</span>Quizz FDD
       </button>
       <!-- <img src="img/jillian.png" alt=""> -->
     </header>
 
     <main>
       <!-- ===== MENU PRINCIPAL ===== -->
-      <section id="menu-screen" class="screen active">
-        <div class="hero">
-          <p class="eyebrow">One Piece · Fruits du Démon</p>
-          <h1>Devine le <span class="accent">Fruit du Démon</span></h1>
-          <p class="subtitle">
-            Choisis ton niveau, observe le fruit et trouve son nom.
-            Plus tu montes, plus la mer est agitée.
-          </p>
-        </div>
+      <section id="menu-screen" class="screen panneau panneau-large active">
+        <p class="eyebrow">One Piece · Fruits du Démon</p>
+        <h1>Devine le <span class="accent">Fruit du Démon</span></h1>
+        <p class="sous-titre">
+          Choisis ton niveau, observe le fruit et trouve son nom.
+          Plus tu montes, plus la mer est agitée.
+        </p>
 
         <div id="level-grid" class="level-grid"></div>
 
-        <details class="rules">
-          <summary>Comment jouer ?</summary>
-          <ul>
-            <li>Une image de fruit s'affiche : trouve son nom (ex. <em>gomu gomu no mi</em>).</li>
-            <li>Une mauvaise réponse coûte une vie ❤️. Plus de vies = fin de partie.</li>
-            <li>L'indice révèle le porteur du fruit, mais réduit les points gagnés.</li>
-            <li>« Passer » révèle la réponse et coûte une vie.</li>
-            <li>Bonus de rapidité sur les niveaux chronométrés et bonus de série dès 3 bonnes réponses d'affilée.</li>
-            <li>Raccourcis : <kbd>Entrée</kbd> valider · <kbd>1</kbd>–<kbd>4</kbd> choix QCM · <kbd>I</kbd> indice.</li>
-          </ul>
-        </details>
+        <h2 class="titre-section">Comment jouer ?</h2>
+        <ul class="regles">
+          <li><span class="regles-numero">1</span><span>Observe l'image et trouve le nom du fruit (ex. <em>gomu gomu no mi</em>).</span></li>
+          <li><span class="regles-numero">2</span><span>Une mauvaise réponse coûte une vie ♥. Plus de vies : fin de partie.</span></li>
+          <li><span class="regles-numero">3</span><span>L'indice révèle le porteur du fruit, mais réduit les points gagnés.</span></li>
+          <li><span class="regles-numero">4</span><span>Réponds vite et enchaîne 3 bonnes réponses pour gagner des bonus.</span></li>
+        </ul>
+        <p class="raccourcis">
+          <kbd>Entrée</kbd> valider · <kbd>1</kbd>–<kbd>4</kbd> choix QCM · <kbd>I</kbd> indice
+        </p>
       </section>
 
       <!-- ===== JEU ===== -->
-      <section id="game-screen" class="screen">
-        <div class="hud">
-          <button id="quit-btn" class="ghost-btn" type="button">← Menu</button>
-          <div class="hud-level" id="hud-level"></div>
-          <div class="hud-score">
-            <span class="label">Score</span>
-            <span id="hud-score">0</span>
+      <section id="game-screen" class="screen panneau">
+        <div class="jeu-entete">
+          <button id="quit-btn" class="bouton bouton-secondaire bouton-petit" type="button">← Menu</button>
+          <h2 id="hud-level"></h2>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-valeur" id="hud-score">0</span>
+            <span class="stat-label">Score</span>
+          </div>
+          <div class="stat">
+            <span class="stat-valeur hearts" id="hud-lives"></span>
+            <span class="stat-label">Vies</span>
+          </div>
+          <div class="stat">
+            <span class="stat-valeur" id="progress-text">1/10</span>
+            <span class="stat-label">Question</span>
           </div>
         </div>
 
-        <div class="progress-row">
-          <div class="progress"><div class="progress-fill" id="progress-fill"></div></div>
-          <span id="progress-text" class="progress-text">1 / 10</span>
-        </div>
+        <div class="progression"><div class="progression-remplie" id="progress-fill"></div></div>
 
-        <div id="question-container" class="card"></div>
+        <div id="question-container"></div>
       </section>
 
       <!-- ===== FIN DE PARTIE ===== -->
-      <section id="end-screen" class="screen">
-        <div id="end-container" class="card end-card"></div>
+      <section id="end-screen" class="screen panneau">
+        <div id="end-container"></div>
       </section>
     </main>
 
-    <footer>
-      <span>Fait avec</span>
-      <img src="img/HTML-5-Badge-Logo.png" alt="HTML5" />
-      <img src="img/CSS-Logo.png" alt="CSS3" />
-      <img src="img/Unofficial_JavaScript_logo_2.svg.png" alt="JavaScript" />
+    <footer class="pied">
+      <p>© 2026 Quizz FDD · Tous droits réservés</p>
     </footer>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
