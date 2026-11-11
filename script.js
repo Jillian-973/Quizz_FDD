@@ -2,55 +2,101 @@
    QUIZZ FDD — Devine le Fruit du Démon
    ========================================================= */
 
+/* ---------- Les fruits ----------
+   rarete : 1 = très connu · 2 = connu · 3 = pour les experts
+   modele : (optionnel) modèle du fruit Zoan, affiché à la révélation
+   Un fruit dont l'image est absente du dossier img/ est ignoré
+   automatiquement : il suffit d'ajouter l'image pour l'activer.     */
 const quizz = [
-  { img: "img/gomugomu.jpg", reponse: "gomu gomu no mi", porteur: "Luffy" },
-  { img: "img/gorogoro.jpg", reponse: "goro goro no mi", porteur: "Ener" },
-  { img: "img/guragura.png", reponse: "gura gura no mi", porteur: "Barbe Blanche" },
-  { img: "img/hitohito.jpg", reponse: "hito hito no mi", porteur: "Chopper" },
-  { img: "img/kagekage.jpg", reponse: "kage kage no mi", porteur: "Gecko Moria" },
-  { img: "img/meramera.jpg", reponse: "mera mera no mi", porteur: "Ace" },
-  { img: "img/opeope.jpg", reponse: "ope ope no mi", porteur: "Trafalgar Law" },
-  { img: "img/sunasuna.jpg", reponse: "suna suna no mi", porteur: "Crocodile" },
-  { img: "img/yamiyami.jpg", reponse: "yami yami no mi", porteur: "Barbe Noire" },
-  { img: "img/yomiyomi.jpg", reponse: "yomi yomi no mi", porteur: "Brook" },
+  // --- Rareté 1 : les incontournables ---
+  { img: "img/gomugomu.jpg", reponse: "gomu gomu no mi", porteur: "Luffy", rarete: 1 },
+  { img: "img/meramera.jpg", reponse: "mera mera no mi", porteur: "Ace", rarete: 1 },
+  { img: "img/guragura.png", reponse: "gura gura no mi", porteur: "Barbe Blanche", rarete: 1 },
+  { img: "img/yamiyami.jpg", reponse: "yami yami no mi", porteur: "Barbe Noire", rarete: 1 },
+  { img: "img/opeope.jpg", reponse: "ope ope no mi", porteur: "Trafalgar Law", rarete: 1 },
+  { img: "img/gorogoro.jpg", reponse: "goro goro no mi", porteur: "Ener", rarete: 1 },
+  { img: "img/hitohito.jpg", reponse: "hito hito no mi", porteur: "Chopper", rarete: 1 },
+  { img: "img/sunasuna.jpg", reponse: "suna suna no mi", porteur: "Crocodile", rarete: 1 },
+  { img: "img/yomiyomi.jpg", reponse: "yomi yomi no mi", porteur: "Brook", rarete: 1 },
+  { img: "img/barabara.png", reponse: "bara bara no mi", porteur: "Baggy", rarete: 1 },
+  { img: "img/hanahana.png", reponse: "hana hana no mi", porteur: "Nico Robin", rarete: 1 },
+  { img: "img/itoito.png", reponse: "ito ito no mi", porteur: "Doflamingo", rarete: 1 },
+  // --- Rareté 2 : les classiques ---
+  { img: "img/kagekage.jpg", reponse: "kage kage no mi", porteur: "Gecko Moria", rarete: 2 },
+  { img: "img/nikyunikyu.png", reponse: "nikyu nikyu no mi", porteur: "Bartholomew Kuma", rarete: 2 },
+  { img: "img/bomubomu.png", reponse: "bomu bomu no mi", porteur: "Mr. 5", rarete: 2 },
+  { img: "img/supasupa.png", reponse: "supa supa no mi", porteur: "Mr. 1 (Daz Bones)", rarete: 2 },
+  { img: "img/dorudoru.png", reponse: "doru doru no mi", porteur: "Mr. 3", rarete: 2 },
+  { img: "img/jikijiki.png", reponse: "jiki jiki no mi", porteur: "Eustass Kid", rarete: 2 },
+  { img: "img/uouo.jpg", reponse: "uo uo no mi", modele: "Seiryu", porteur: "Kaido", rarete: 2 },
+  { img: "img/inuinu.png", reponse: "inu inu no mi", modele: "Okuchi no Makami", porteur: "Yamato", rarete: 2 },
+  // --- Rareté 3 : pour les experts ---
+  { img: "img/subesube.png", reponse: "sube sube no mi", porteur: "Alvida", rarete: 3 },
+  { img: "img/kilokilo.png", reponse: "kilo kilo no mi", porteur: "Miss Valentine", rarete: 3 },
+  { img: "img/bakubaku.png", reponse: "baku baku no mi", porteur: "Wapol", rarete: 3 },
+  { img: "img/togetoge.png", reponse: "toge toge no mi", porteur: "Miss Doublefinger", rarete: 3 },
+  { img: "img/awaawa.png", reponse: "awa awa no mi", porteur: "Kalifa", rarete: 3 },
+  { img: "img/shiroshiro.png", reponse: "shiro shiro no mi", porteur: "Capone Bege", rarete: 3 },
+
+  // --- En attente d'image : déposer le fichier dans img/ pour les activer ---
+  { img: "img/hiehie.png", reponse: "hie hie no mi", porteur: "Aokiji", rarete: 1 },
+  { img: "img/pikapika.png", reponse: "pika pika no mi", porteur: "Kizaru", rarete: 1 },
+  { img: "img/magumagu.png", reponse: "magu magu no mi", porteur: "Akainu", rarete: 1 },
+  { img: "img/meromero.png", reponse: "mero mero no mi", porteur: "Boa Hancock", rarete: 1 },
+  { img: "img/mokumoku.png", reponse: "moku moku no mi", porteur: "Smoker", rarete: 2 },
+  { img: "img/sorusoru.png", reponse: "soru soru no mi", porteur: "Big Mom", rarete: 2 },
+  { img: "img/mochimochi.png", reponse: "mochi mochi no mi", porteur: "Katakuri", rarete: 2 },
+  { img: "img/gasugasu.png", reponse: "gasu gasu no mi", porteur: "Caesar Clown", rarete: 2 },
+  { img: "img/horohoro.png", reponse: "horo horo no mi", porteur: "Perona", rarete: 2 },
+  { img: "img/dokudoku.png", reponse: "doku doku no mi", porteur: "Magellan", rarete: 2 },
+  { img: "img/manemane.png", reponse: "mane mane no mi", porteur: "Bon Clay (Mr. 2)", rarete: 3 },
+  { img: "img/hobihobi.png", reponse: "hobi hobi no mi", porteur: "Sugar", rarete: 3 },
+  { img: "img/zushizushi.png", reponse: "zushi zushi no mi", porteur: "Fujitora", rarete: 3 },
+  { img: "img/baribari.png", reponse: "bari bari no mi", porteur: "Bartolomeo", rarete: 3 },
 ].map((f) => ({ ...f, indice: `Le porteur du fruit est ${f.porteur}` }));
 
+// Fruits réellement jouables (image trouvée), rempli au démarrage
+let fruits = [];
+
+const QUESTIONS_PAR_PARTIE = 10;
+
 /* ---------- Configuration des niveaux ----------
-   mode   : "qcm" (4 choix) ou "text" (réponse libre)
-   lives  : nombre de vies (tentatives) pour la partie
-   timer  : secondes par question (0 = pas de chrono)
-   effect : "none" | "blur" (image floue) | "zoom" (gros plan)
-   points : points pour une bonne réponse
-   malus  : points retirés si l'indice a été utilisé            */
+   mode    : "qcm" (4 choix) ou "text" (réponse libre)
+   lives   : nombre de vies (tentatives) pour la partie
+   timer   : secondes par question (0 = pas de chrono)
+   effect  : "none" | "blur" (image floue) | "zoom" (gros plan)
+   points  : points pour une bonne réponse
+   malus   : points retirés si l'indice a été utilisé
+   rarete  : rareté maximale des fruits tirés pour ce niveau       */
 const LEVELS = {
   1: {
     name: "Moussaillon", icon: "⚓", mode: "qcm", lives: 5, timer: 0,
-    effect: "none", points: 10, malus: 5,
-    desc: "QCM à 4 choix · image nette · sans chrono",
+    effect: "none", points: 10, malus: 5, rarete: 1,
+    desc: "QCM à 4 choix · fruits célèbres · sans chrono",
   },
   2: {
     name: "Pirate", icon: "🏴‍☠️", mode: "qcm", lives: 4, timer: 15,
-    effect: "none", points: 15, malus: 5,
+    effect: "none", points: 15, malus: 5, rarete: 2,
     desc: "QCM à 4 choix · chrono 15 s · 4 vies",
   },
   3: {
     name: "Supernova", icon: "⭐", mode: "text", lives: 5, timer: 0,
-    effect: "none", points: 20, malus: 10,
+    effect: "none", points: 20, malus: 10, rarete: 2,
     desc: "Réponse libre · image nette · sans chrono",
   },
   4: {
     name: "Grand Corsaire", icon: "⚔️", mode: "text", lives: 4, timer: 30,
-    effect: "blur", points: 30, malus: 15,
-    desc: "Réponse libre · image floue · chrono 30 s",
+    effect: "blur", points: 30, malus: 15, rarete: 3,
+    desc: "Réponse libre · image floue · chrono 30 s · tous les fruits",
   },
   5: {
     name: "Empereur", icon: "👑", mode: "text", lives: 3, timer: 20,
-    effect: "zoom", points: 50, malus: 25,
+    effect: "zoom", points: 50, malus: 25, rarete: 3,
     desc: "Réponse libre · gros plan · chrono 20 s · 3 vies",
   },
   shuffle: {
-    name: "Shuffle", icon: "🔀", lives: 5,
-    desc: "Ordre aléatoire · chaque fruit tire un niveau de 1 à 5 au hasard",
+    name: "Shuffle", icon: "🔀", lives: 5, rarete: 3,
+    desc: "Tous les fruits · chaque question tire un niveau de 1 à 5 au hasard",
   },
 };
 
@@ -103,9 +149,13 @@ function normalize(str) {
 }
 
 // "gomu gomu no mi", "Gomu-Gomu no Mi", "gomugomu" sont acceptés
-function isCorrect(userAnswer, reponse) {
-  const target = normalize(reponse);
-  return userAnswer === target || userAnswer + "nomi" === target;
+function isCorrect(userAnswer, q) {
+  const target = normalize(q.reponse);
+  if (userAnswer === target || userAnswer + "nomi" === target) return true;
+  // Zoan : "uo uo no mi modele seiryu" ou "uo uo no mi seiryu" sont aussi acceptés
+  if (!q.modele) return false;
+  const modele = normalize(q.modele);
+  return userAnswer === target + modele || userAnswer === target + "modele" + modele;
 }
 
 function levenshtein(a, b) {
@@ -135,6 +185,26 @@ function prettyName(str) {
     .split(" ")
     .map((w) => (w === "no" ? w : w.charAt(0).toUpperCase() + w.slice(1)))
     .join(" ");
+}
+
+// Nom complet affiché, avec le modèle pour les Zoan
+function fullName(q) {
+  return prettyName(q.reponse) + (q.modele ? `, modèle ${q.modele}` : "");
+}
+
+// Vérifie quelles images existent pour ne garder que les fruits jouables
+function chargerFruits() {
+  return Promise.all(
+    quizz.map(
+      (f) =>
+        new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve(f);
+          img.onerror = () => resolve(null);
+          img.src = f.img;
+        })
+    )
+  ).then((list) => list.filter(Boolean));
 }
 
 function loadBest() {
@@ -182,6 +252,7 @@ function showScreen(name) {
    ========================================================= */
 function renderMenu() {
   const best = loadBest();
+  $("nb-fruits").textContent = fruits.length;
   const keys = ["1", "2", "3", "4", "5", "shuffle"];
 
   $("level-grid").innerHTML = keys
@@ -203,6 +274,7 @@ function renderMenu() {
           </div>
           <h3>${isShuffle ? "" : "Niveau " + key + " · "}${lvl.name}</h3>
           <p class="level-desc">${lvl.desc}</p>
+          <p class="level-pool">${fruits.filter((f) => f.rarete <= lvl.rarete).length} fruits possibles</p>
           <div class="level-bottom">
             <div class="pips" title="Difficulté">${pips}</div>
             <div class="level-best">
@@ -241,19 +313,21 @@ function askQuit() {
    Partie
    ========================================================= */
 function buildQuestions(key) {
-  let list = quizz.map((f) => ({ ...f }));
+  // Fruits autorisés pour ce niveau, puis tirage de 10 fruits au hasard
+  const pool = fruits.filter((f) => f.rarete <= LEVELS[key].rarete);
+  const list = shuffleArray(pool)
+    .slice(0, QUESTIONS_PAR_PARTIE)
+    .map((f) => ({ ...f }));
 
-  if (key === "shuffle") {
-    list = shuffleArray(list);
-    list.forEach((q) => (q.level = 1 + Math.floor(Math.random() * 5)));
-  } else {
-    list.forEach((q) => (q.level = Number(key)));
-  }
+  list.forEach((q) => {
+    q.level = key === "shuffle" ? 1 + Math.floor(Math.random() * 5) : Number(key);
+  });
 
   list.forEach((q) => {
     const cfg = LEVELS[q.level];
     if (cfg.mode === "qcm") {
-      const wrong = shuffleArray(quizz.filter((f) => f.reponse !== q.reponse))
+      // Les mauvaises réponses viennent du même groupe de fruits
+      const wrong = shuffleArray(pool.filter((f) => f.reponse !== q.reponse))
         .slice(0, 3)
         .map((f) => f.reponse);
       q.choices = shuffleArray([q.reponse, ...wrong]);
@@ -400,7 +474,7 @@ function checkAnswer(rawAnswer, choiceBtn) {
     return;
   }
 
-  if (isCorrect(userAnswer, q.reponse)) {
+  if (isCorrect(userAnswer, q)) {
     streak++;
     bestStreak = Math.max(bestStreak, streak);
     const gained = update_score();
@@ -490,12 +564,12 @@ function resolveQuestion(found, gained, reason = "") {
     if (gained.streakBonus) extras.push(`+${gained.streakBonus} série`);
     feedback.className = "feedback good";
     feedback.innerHTML = `
-      <strong>Bravo ! ${prettyName(q.reponse)}</strong>
+      <strong>Bravo ! ${fullName(q)}</strong>
       <span class="reveal-sub">Porteur : ${q.porteur} · +${gained.total} pts${extras.length ? ` (${extras.join(", ")})` : ""}</span>`;
   } else {
     feedback.className = "feedback bad";
     feedback.innerHTML = `
-      <strong>${reason} C'était ${prettyName(q.reponse)}</strong>
+      <strong>${reason} C'était ${fullName(q)}</strong>
       <span class="reveal-sub">Porteur : ${q.porteur}</span>`;
   }
 
@@ -578,7 +652,7 @@ function endGame() {
         <li class="recap-item ${status}">
           <img src="${q.img}" alt="" />
           <div>
-            <strong>${status === "unplayed" ? "???" : prettyName(q.reponse)}</strong>
+            <strong>${status === "unplayed" ? "???" : fullName(q)}</strong>
             <span>${status === "unplayed" ? "" : q.porteur + " · "}${label}</span>
           </div>
           <span class="recap-mark">${status === "found" ? "✓" : status === "missed" ? "✗" : "–"}</span>
@@ -638,4 +712,7 @@ document.addEventListener("keydown", (e) => {
 $("quit-btn").addEventListener("click", askQuit);
 $("brand").addEventListener("click", askQuit);
 
-renderMenu();
+chargerFruits().then((list) => {
+  fruits = list;
+  renderMenu();
+});

@@ -26,22 +26,32 @@
         <p class="eyebrow">One Piece · Fruits du Démon</p>
         <h1>Devine le <span class="accent">Fruit du Démon</span></h1>
         <p class="sous-titre">
-          Choisis ton niveau, observe le fruit et trouve son nom.
+          Choisis ton niveau, observe le fruit et trouve son nom parmi
+          <strong id="nb-fruits" class="accent"></strong> Fruits du Démon.
           Plus tu montes, plus la mer est agitée.
         </p>
 
         <div id="level-grid" class="level-grid"></div>
 
-        <h2 class="titre-section">Comment jouer ?</h2>
-        <ul class="regles">
-          <li><span class="regles-numero">1</span><span>Observe l'image et trouve le nom du fruit (ex. <em>gomu gomu no mi</em>).</span></li>
-          <li><span class="regles-numero">2</span><span>Une mauvaise réponse coûte une vie ♥. Plus de vies : fin de partie.</span></li>
-          <li><span class="regles-numero">3</span><span>L'indice révèle le porteur du fruit, mais réduit les points gagnés.</span></li>
-          <li><span class="regles-numero">4</span><span>Réponds vite et enchaîne 3 bonnes réponses pour gagner des bonus.</span></li>
-        </ul>
-        <p class="raccourcis">
-          <kbd>Entrée</kbd> valider · <kbd>1</kbd>–<kbd>4</kbd> choix QCM · <kbd>I</kbd> indice
-        </p>
+        <details class="deroulant">
+          <summary>
+            <span class="deroulant-icone">?</span>
+            <span class="deroulant-titre">Comment jouer ?</span>
+            <span class="chevron" aria-hidden="true"></span>
+          </summary>
+          <div class="deroulant-contenu">
+            <ul class="regles">
+              <li><span class="regles-numero">1</span><span>Chaque partie tire <strong>10 fruits au hasard</strong> : observe l'image et trouve le nom du fruit (ex. <em>gomu gomu no mi</em>).</span></li>
+              <li><span class="regles-numero">2</span><span>Une mauvaise réponse coûte une vie ♥. Plus de vies : fin de partie.</span></li>
+              <li><span class="regles-numero">3</span><span>L'indice révèle le porteur du fruit, mais réduit les points gagnés.</span></li>
+              <li><span class="regles-numero">4</span><span>Réponds vite et enchaîne 3 bonnes réponses pour gagner des bonus.</span></li>
+              <li><span class="regles-numero">5</span><span>Les premiers niveaux piochent parmi les fruits les plus connus, les derniers dans toute l'encyclopédie.</span></li>
+            </ul>
+            <p class="raccourcis">
+              <kbd>Entrée</kbd> valider · <kbd>1</kbd>–<kbd>4</kbd> choix QCM · <kbd>I</kbd> indice
+            </p>
+          </div>
+        </details>
       </section>
 
       <!-- ===== JEU ===== -->

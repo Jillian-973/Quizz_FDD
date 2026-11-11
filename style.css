@@ -151,10 +151,90 @@ main {
   line-height: 1.6;
 }
 
-.titre-section {
-  margin: 36px 0 16px;
-  font-size: 20px;
+/* ---------- Menu déroulant « Comment jouer ? » ---------- */
+.deroulant {
+  max-width: 560px;
+  margin: 32px auto 0;
+  border: 2px solid var(--bordure);
+  border-radius: 12px;
+  background-color: var(--fond-2);
+  box-shadow: 0 4px 0 var(--bordure);
+  text-align: left;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+
+.deroulant[open] {
+  border-color: var(--accent);
+  box-shadow: 0 4px 0 var(--accent-fonce);
+}
+
+.deroulant summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  font-size: 17px;
   font-weight: 800;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.deroulant summary::-webkit-details-marker {
+  display: none;
+}
+
+.deroulant summary:hover {
+  background-color: rgba(255, 122, 24, 0.08);
+}
+
+.deroulant summary:focus-visible {
+  outline: 3px solid var(--or);
+  outline-offset: -3px;
+}
+
+.deroulant-icone {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  color: #fff;
+  text-align: center;
+}
+
+.deroulant-titre {
+  flex: 1;
+}
+
+.chevron {
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+  border-right: 3px solid var(--accent);
+  border-bottom: 3px solid var(--accent);
+  transform: rotate(45deg);
+  transition: transform 0.2s;
+}
+
+.deroulant[open] .chevron {
+  transform: rotate(-135deg);
+}
+
+.deroulant-contenu {
+  padding: 4px 18px 18px;
+  border-top: 2px dashed var(--bordure);
+  animation: apparaitre 0.25s ease both;
+}
+
+.deroulant-contenu .regles {
+  margin-top: 8px;
+}
+
+.deroulant-contenu .raccourcis {
+  text-align: center;
 }
 
 /* =========================================================
@@ -314,6 +394,13 @@ input:focus-visible {
   color: var(--texte-doux);
   font-size: 14px;
   line-height: 1.5;
+}
+
+.level-pool {
+  margin: 0;
+  color: var(--lvl);
+  font-size: 13px;
+  font-weight: 800;
 }
 
 .level-bottom {
