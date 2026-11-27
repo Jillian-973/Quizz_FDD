@@ -559,6 +559,7 @@ function resolveQuestion(found, gained, reason = "") {
   stopTimer();
   const q = questions[currentQuestion];
   results.push({ ...q, found, hint: hint_asked, gained: gained ? gained.total : 0 });
+  $("hud-score").textContent = score; // le score gagné s'affiche tout de suite
 
   const frame = $("fruit-frame");
   frame.classList.remove("anime", "shake");
