@@ -70,32 +70,32 @@ const QUESTIONS_PAR_PARTIE = 10;
    rarete  : rareté maximale des fruits tirés pour ce niveau       */
 const LEVELS = {
   1: {
-    name: "Moussaillon", icon: "⚓", mode: "qcm", lives: 5, timer: 0,
+    name: "Moussaillon", mode: "qcm", lives: 5, timer: 0,
     effect: "none", points: 10, malus: 5, rarete: 1,
     desc: "QCM à 4 choix · fruits célèbres · sans chrono",
   },
   2: {
-    name: "Pirate", icon: "🏴‍☠️", mode: "qcm", lives: 4, timer: 15,
+    name: "Pirate", mode: "qcm", lives: 4, timer: 15,
     effect: "none", points: 15, malus: 5, rarete: 2,
     desc: "QCM à 4 choix · chrono 15 s · 4 vies",
   },
   3: {
-    name: "Supernova", icon: "⭐", mode: "text", lives: 5, timer: 0,
+    name: "Supernova", mode: "text", lives: 5, timer: 0,
     effect: "none", points: 20, malus: 10, rarete: 2,
     desc: "Réponse libre · image nette · sans chrono",
   },
   4: {
-    name: "Grand Corsaire", icon: "⚔️", mode: "text", lives: 4, timer: 30,
+    name: "Grand Corsaire", mode: "text", lives: 4, timer: 30,
     effect: "blur", points: 30, malus: 15, rarete: 3,
     desc: "Réponse libre · image floue · chrono 30 s · tous les fruits",
   },
   5: {
-    name: "Empereur", icon: "👑", mode: "text", lives: 3, timer: 20,
+    name: "Empereur", mode: "text", lives: 3, timer: 20,
     effect: "zoom", points: 50, malus: 25, rarete: 3,
     desc: "Réponse libre · gros plan · chrono 20 s · 3 vies",
   },
   shuffle: {
-    name: "Shuffle", icon: "🔀", lives: 5, rarete: 3,
+    name: "Shuffle", lives: 5, rarete: 3,
     desc: "Tous les fruits · chaque question tire un niveau de 1 à 5 au hasard",
   },
 };
@@ -286,12 +286,10 @@ function renderMenu() {
       return `
         <button class="level-card lvl-${key}" data-level="${key}" type="button">
           <div class="level-top">
-            <span class="level-num">${isShuffle ? "?" : key}</span>
             <div class="level-nom">
               <span class="level-label">${isShuffle ? "Mode spécial" : "Niveau " + key}</span>
               <h3>${lvl.name}</h3>
             </div>
-            <span class="level-icon">${lvl.icon}</span>
           </div>
           <p class="level-desc">${lvl.desc}</p>
           <div class="level-bottom">
@@ -383,7 +381,7 @@ function updateHud() {
     `<span class="heart ${i < attempts ? "" : "lost"}">♥</span>`
   ).join("");
 
-  $("hud-level").textContent = `${lvl.icon} ${lvl.name}`;
+  $("hud-level").textContent = lvl.name;
   $("hud-lives").innerHTML = hearts;
   $("hud-lives").title = `${attempts} vie(s) restante(s)`;
   $("hud-score").textContent = score;
@@ -445,7 +443,7 @@ function nextQuestion() {
     <p id="hint" class="hint"></p>
 
     <div class="actions" id="actions">
-      <button id="hint-btn" class="bouton bouton-secondaire bouton-petit" type="button">💡 Indice (−${cfg.malus} pts)</button>
+      <button id="hint-btn" class="bouton bouton-secondaire bouton-petit" type="button">Indice (−${cfg.malus} pts)</button>
       <button id="skip-btn" class="bouton bouton-secondaire bouton-petit" type="button">Passer (−1 ♥)</button>
     </div>
   `;
@@ -496,7 +494,7 @@ function checkAnswer(rawAnswer, choiceBtn) {
     streak++;
     bestStreak = Math.max(bestStreak, streak);
     const gained = update_score();
-    if (streak >= STREAK_MIN) toast(`🔥 Série de ${streak} !`);
+    if (streak >= STREAK_MIN) toast(`Série de ${streak} · +${STREAK_BONUS} pts`);
     if (choiceBtn) choiceBtn.classList.add("correct");
     resolveQuestion(true, gained);
     return;
@@ -506,7 +504,7 @@ function checkAnswer(rawAnswer, choiceBtn) {
   if (cfg.mode === "text" && !nearMissUsed && isNearMiss(userAnswer, q.reponse)) {
     nearMissUsed = true;
     feedback.className = "feedback warn";
-    feedback.textContent = "Presque ! Vérifie l'orthographe (aucune vie perdue).";
+    feedback.textContent = "Presque, vérifie l'orthographe (aucune vie perdue)";
     return;
   }
 
@@ -521,12 +519,12 @@ function checkAnswer(rawAnswer, choiceBtn) {
   }
 
   if (attempts <= 0) {
-    resolveQuestion(false, null, "Plus de vies !");
+    resolveQuestion(false, null, "Plus de vies.");
     return;
   }
 
   feedback.className = "feedback bad";
-  feedback.textContent = `Raté ! Il te reste ${attempts} vie${attempts > 1 ? "s" : ""}.`;
+  feedback.textContent = `Raté, il te reste ${attempts} vie${attempts > 1 ? "s" : ""}`;
   const input = $("answer");
   if (input) input.select();
 }
@@ -552,7 +550,7 @@ function timeUp() {
   streak = 0;
   updateHud();
   shake();
-  resolveQuestion(false, null, "⏱ Temps écoulé !");
+  resolveQuestion(false, null, "Temps écoulé.");
 }
 
 // Affiche la bonne réponse puis propose de passer à la suite
@@ -561,6 +559,7 @@ function resolveQuestion(found, gained, reason = "") {
   stopTimer();
   const q = questions[currentQuestion];
   results.push({ ...q, found, hint: hint_asked, gained: gained ? gained.total : 0 });
+  $("hud-score").textContent = score; // le score gagné s'affiche tout de suite
 
   const frame = $("fruit-frame");
   frame.classList.remove("anime", "shake");
@@ -582,8 +581,8 @@ function resolveQuestion(found, gained, reason = "") {
     if (gained.streakBonus) extras.push(`+${gained.streakBonus} série`);
     feedback.className = "feedback good";
     feedback.innerHTML = `
-      <strong>Bravo ! ${fullName(q)}</strong>
-      <span class="reveal-sub">Porteur : ${q.porteur} · +${gained.total} pts${extras.length ? ` (${extras.join(", ")})` : ""}</span>`;
+      <strong>${fullName(q)}</strong>
+      <span class="reveal-sub">Bonne réponse · Porteur : ${q.porteur} · +${gained.total} pts${extras.length ? ` (${extras.join(", ")})` : ""}</span>`;
   } else {
     feedback.className = "feedback bad";
     feedback.innerHTML = `
@@ -656,9 +655,9 @@ function endGame() {
   else if (stars > best.stars) saveBest(levelKey, { score: best.score, stars });
 
   const title = !survived
-    ? "Naufrage…"
+    ? "Naufrage"
     : found === questions.length && stars === 3
-    ? "Roi des Pirates !"
+    ? "Roi des Pirates"
     : "Traversée terminée";
 
   const recap = questions
@@ -680,9 +679,8 @@ function endGame() {
 
   $("end-container").innerHTML = `
     <div class="fin-titre">
-      <div class="trophee ${survived ? "" : "perdu"}">${survived ? "🏆" : "☠️"}</div>
       <div>
-        <p class="eyebrow">${LEVELS[levelKey].icon} ${levelKey === "shuffle" ? "" : "Niveau " + levelKey + " · "}${LEVELS[levelKey].name}</p>
+        <p class="eyebrow">${levelKey === "shuffle" ? "" : "Niveau " + levelKey + " · "}${LEVELS[levelKey].name}</p>
         <h2 class="end-titre">${title}</h2>
       </div>
     </div>
@@ -691,7 +689,7 @@ function endGame() {
       <div class="stars big">${starsHtml(stars)}</div>
       <p class="final-score"><span>${score}</span> pts</p>
     </div>
-    ${isRecord && score > 0 ? `<p class="record">Nouveau record !</p>` : best ? `<p class="record muted">Record : ${best.score} pts</p>` : ""}
+    ${isRecord && score > 0 ? `<p class="record">Nouveau record</p>` : best ? `<p class="record muted">Record : ${best.score} pts</p>` : ""}
 
     <div class="stats">
       <div class="stat"><span class="stat-valeur">${found}/${questions.length}</span><span class="stat-label">Trouvés</span></div>
@@ -702,8 +700,8 @@ function endGame() {
     <ul class="recap">${recap}</ul>
 
     <div class="actions">
-      <button id="replay-btn" class="bouton" type="button">↻ RECOMMENCER</button>
-      <button id="menu-btn" class="bouton bouton-secondaire" type="button">MENU</button>
+      <button id="replay-btn" class="bouton" type="button">Recommencer</button>
+      <button id="menu-btn" class="bouton bouton-secondaire" type="button">Menu</button>
     </div>
   `;
 
