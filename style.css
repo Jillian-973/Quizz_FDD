@@ -155,7 +155,7 @@ button {
   width: 32px;
   height: 32px;
   display: block;
-  border-radius: 50%;
+  object-fit: contain; /* fruit détouré, sans fond */
 }
 
 /* =========================================================
